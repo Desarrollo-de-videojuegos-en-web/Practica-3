@@ -3,27 +3,15 @@
  <tileset firstgid="1" name="tiles" tilewidth="34" tileheight="34" tilecount="49" columns="7">
   <image source="../images/tiles.png" width="256" height="256"/>
  </tileset>
- <group name="background" offsetx="-2848" offsety="-3288">
-  <imagelayer name="bg6" locked="1" offsetx="4000" offsety="0.00378788">
-   <image source="../images/bg.png" width="800" height="600"/>
-  </imagelayer>
-  <imagelayer name="bg5" locked="1" offsetx="3200" offsety="0">
-   <image source="../images/bg.png" width="800" height="600"/>
-  </imagelayer>
-  <imagelayer name="bg4" locked="1" offsetx="2400" offsety="-0.0606061">
-   <image source="../images/bg.png" width="800" height="600"/>
-  </imagelayer>
-  <imagelayer name="bg3" locked="1" offsetx="1600" offsety="1.11022e-16">
-   <image source="../images/bg.png" width="800" height="600"/>
-  </imagelayer>
-  <imagelayer name="bg2" locked="1" offsetx="800" offsety="0">
-   <image source="../images/bg.png" width="800" height="600"/>
-  </imagelayer>
-  <imagelayer name="bg1" locked="1">
+ <group name="background">
+  <imagelayer name="bg1">
    <image source="../images/bg.png" width="800" height="600"/>
   </imagelayer>
  </group>
- <layer name="Suelo" width="60" height="18" offsetx="-2847.83" offsety="-3301.33">
+ <layer name="Suelo" width="60" height="18">
+  <properties>
+   <property name="collision" value="true"/>
+  </properties>
   <data>
    <chunk x="16" y="0" width="16" height="16">
     <tile/>
@@ -4413,5 +4401,4 @@
    </chunk>
   </data>
  </layer>
- <group name="tuberias"/>
 </map>
