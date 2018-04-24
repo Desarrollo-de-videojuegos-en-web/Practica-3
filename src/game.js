@@ -21,7 +21,7 @@ var game = function() {
         vx:0,
         vy:0, 
         direction: 'rigth',
-        jumpSpeed: -400,
+        jumpSpeed: -550,
         dead: false,
         win: false
     });
@@ -69,16 +69,13 @@ var game = function() {
 				}
 			} else if((this.p.landed < 0 && !this.p.ignoreControls) || this.p.jump) {
 				console.log(this.p.jump);
-				//Q.audio.play('jump_small', {loop:false});
 				this.play("jump_" + this.p.direction);
 				this.p.jump=false;				
 			}
-			if(Q.inputs['up'] && this.p.landed > 0) {
+			if(Q.inputs['up'] && this.jump && this.p.landed > 0) {
 					Q.audio.play('jump_small', {loop:false});
 					console.log('sonido jump');
 				}
-
-
     	}else if(this.p.dead){
     		this.play('dead_right');
     	}
@@ -100,7 +97,7 @@ var game = function() {
 
     },
     jump: function(){
-    	this.p.vy = -500;
+    	this.p.vy = -600;
 		this.p.jump = true;
     }
   });
@@ -252,6 +249,62 @@ Q.Sprite.extend("Princess", {
     }
 });
 
+Q.Sprite.extend("Coin", {
+
+	init: function(p) {
+	    this._super(p,{
+	      sheet: "coin",
+	      sprite: 'coin',
+	      type: Q.SPRITE_COLLECTABLE,
+	      collisionMask: Q.SPRITE_PLAYER,
+	      sensor: true,
+	      vx: 0,
+	      vy: 0,
+	      gravity: 0,
+	      pickedUp: false
+	    });
+
+	    this.add("2d, animation, tween");
+
+	    this.on("sensor");
+  	},
+	sensor: function() {
+	    // Increment the coins.
+	    if(!this.p.pickedUp)
+	    {
+	    	this.p.pickedUp = true;
+	    	//Q.state.inc("coins", 1);	    
+		    Q.audio.play('coin');
+		    this.anim();
+	  	}
+	},
+
+	step: function(dt) {
+		this.play("shine",1);
+		//this.anim();
+	},
+
+	anim: function() {
+		this.animate({ x: this.p.x, y: this.p.y-25, angle: 0 }, 0.25, Q.Easing.Linear, {callback: function() { this.destroy(); }});
+	}
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   ////////// Load TMX level //////////
 Q.scene("level1", function(stage) {
@@ -263,9 +316,11 @@ Q.scene("level1", function(stage) {
 	stage.add("viewport").follow(mario,{ x: true, y: false });
 	stage.add("viewport").centerOn(150, 380);
 
-	stage.insert(new Q.Goomba({x:800}));
+	//stage.insert(new Q.Goomba({x:800}));
 	stage.insert(new Q.Bloopa({x:600}));
 	stage.insert(new Q.Princess({x:400}));
+	stage.insert(new Q.Coin({x:800,y:380}));
+
 	//Q.audio.play('main', { loop: true });
 
 
@@ -330,11 +385,12 @@ Q.scene('initialMenu',function(stage) {
   var jsonFiles = ['mario_small.json','goomba.json'];
   var pngFiles = ['mario_small.png','goomba.png'];
 
-  Q.loadTMX("level.tmx, mainTitle.png, princess.json, princess.png, bloopa.json, bloopa.png, mario_small.png, mario_small.json, goomba.png, goomba.json", function() {
+  Q.loadTMX("level.tmx, coin.png, coin.json, mainTitle.png, princess.json, princess.png, bloopa.json, bloopa.png, mario_small.png, mario_small.json, goomba.png, goomba.json", function() {
 	Q.compileSheets("mario_small.png", "mario_small.json");
     Q.compileSheets("goomba.png", "goomba.json");
     Q.compileSheets("bloopa.png", "bloopa.json");
     Q.compileSheets("princess.png", "princess.json");
+	Q.compileSheets("coin.png","coin.json");
 
 
     Q.animations('mario',{
@@ -364,11 +420,16 @@ Q.scene('initialMenu',function(stage) {
 		crushed: { frames: [2], rate: 0.3, loop: false, trigger: "destroy"}
   	});
 
+  	Q.animations("coin", {
+		shine: { frames: [0,1,2,1], rate: 1/3 }
+	});
+
   	Q.load({
           'main': 'music_main.ogg',
           'kill_enemy': 'kill_enemy.ogg',
           'squish_enemy': 'squish_enemy.ogg',
           'music_die': 'music_die.ogg',
+          'coin': 'coin.ogg',
           'jump_small': 'jump_small.ogg'
         },function() { Q.stageScene("initialMenu"); });	
   });
