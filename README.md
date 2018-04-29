@@ -29,7 +29,7 @@ Mario puede saltar sobre los enemigos para eliminarlos y recoger monedas al choc
 
 Los goombas poseen los mismos componentes que Mario además de aiBounce (para que rebote) y enemy para que haga algo cuando colisiona con Mario. Se mueven de izquierda a derecha y rebotan cuando colisionan con alguna tubería u otro enemigo, y mueren si son pisados por Mario.
 
-# 3.5 Bloopa
+## 3.5 Bloopa
 
 Poseen un comportamiento similar al de los goombas y además saltan cada cierto tiempo hacia la derecha o hacia la izquierda de forma aleatoria. También mueren cuando son pisados po Mario.
 
