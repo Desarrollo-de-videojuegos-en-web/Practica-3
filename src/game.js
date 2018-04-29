@@ -46,7 +46,6 @@ var game = function() {
 	});
     },
     step: function(dt) {
-    	console.log(this.p.x, this.p.y);
     	if(this.p.y>1000){
     		this.die();
     	}
